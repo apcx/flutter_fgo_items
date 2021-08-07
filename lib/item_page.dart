@@ -6,11 +6,12 @@ import 'item.dart';
 final _selected = Rx<Item?>(null);
 
 class ItemPage extends StatelessWidget {
+  static const TITLE = '多素材综合效率表';
   static final _future = loadQuests();
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(title: Text('多素材综合效率表'), actions: [
+      appBar: AppBar(title: Text(TITLE), actions: [
         TextButton(
             child: Text('素材过滤', style: TextStyle(color: Colors.white)), onPressed: () => Get.to(() => ItemFilterPage()))
       ]),
@@ -22,7 +23,7 @@ class ItemPage extends StatelessWidget {
                   child: Obx(() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
                           Checkbox(value: Quest.classHalfAp.value, onChanged: (v) => Quest.classHalfAp.value = v!),
-                          Text('修炼场AP减半')
+                          Text('修炼场AP消耗1/2')
                         ]),
                         Wrap(children: Item.bronze.map((item) => ItemButton(item)).toList()),
                         Wrap(children: Item.silver.map((item) => ItemButton(item)).toList()),
@@ -141,7 +142,7 @@ class ItemFilterButton extends StatelessWidget {
       height: 48,
       child: OutlinedButton(
           style: OutlinedButton.styleFrom(minimumSize: Size.zero, padding: EdgeInsets.zero),
-          onPressed: () => item.excluded.value = !item.excluded.value,
+          onPressed: () => item.excluded.toggle(),
           child: Obx(() => Stack(children: [
                 Center(
                     child: item.excluded.value

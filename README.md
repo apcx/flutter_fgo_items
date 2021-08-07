@@ -1,3 +1,3 @@
 # flutter_fgo_items
 
-List best quests for multiple kinds of items.
+List best quests for **MULTIPLE** kinds of items.
