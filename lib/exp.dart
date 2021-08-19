@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EssencePage extends StatelessWidget {
-  static const TITLE = '概念礼装强化';
-  static const _MAX = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 80, 100];
+class ExpPage extends StatelessWidget {
+  static const TITLE = '从者强化';
+  static const _MAX = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 92, 94, 96, 98, 100];
   static const _EXP = [
     0,
     100,
@@ -97,21 +97,21 @@ class EssencePage extends StatelessWidget {
     11356400,
     11748000,
     12148500, // Lv 90
-    12558000,
-    12976600,
-    13404400,
-    13841500,
-    14288000,
-    14744000,
-    15209600,
-    15684900,
-    16170000,
-    16665000
+    12567000,
+    13021900,
+    13532000,
+    14116500,
+    14795000,
+    15587500,
+    16514400,
+    17596500,
+    18855000,
+    20311500
   ];
 
-  static final _level = 6.obs..listen((lv) => _next.value = min(_next.value, _levelExp(lv)));
+  static final _level = 1.obs..listen((lv) => _next.value = min(_next.value, _levelExp(lv)));
   static final _maxLevel = 50.obs;
-  static final _next = 1600.obs;
+  static final _next = 6.obs;
 
   static int _levelExp(level) => _EXP[level] - _EXP[level - 1];
 
@@ -143,7 +143,7 @@ class EssencePage extends StatelessWidget {
                   try {
                     _maxLevel.value = _MAX.firstWhere((max) => max >= end);
                   } on StateError {
-                    _maxLevel.value = 10;
+                    _maxLevel.value = 20;
                   }
                   _level.value = min(values.start.round(), _maxLevel.value - 1);
                 }),

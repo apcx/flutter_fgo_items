@@ -23,7 +23,7 @@ class ItemPage extends StatelessWidget {
                   child: Obx(() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
                           Checkbox(value: Quest.classHalfAp.value, onChanged: (v) => Quest.classHalfAp.value = v!),
-                          Text('修炼场AP消耗1/2')
+                          Text('修炼场 AP 消耗 1 / 2')
                         ]),
                         Wrap(children: Item.bronze.map((item) => ItemButton(item)).toList()),
                         Wrap(children: Item.silver.map((item) => ItemButton(item)).toList()),

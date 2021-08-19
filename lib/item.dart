@@ -99,12 +99,11 @@ Future loadQuests() async {
   for (final item in Item.gold) item.excluded.value = prefs.getBool(item.name) == true;
   for (final item in Item.gem) item.excluded.value = prefs.getBool(item.name) == true;
 
-  if (kDebugMode) {
-    for (final item in Item.bronze) debugPrint('$item');
-    for (final item in Item.silver) debugPrint('$item');
-    for (final item in Item.gold) debugPrint('$item');
-    for (final item in Item.gem) debugPrint('$item');
-  }
+  if (kReleaseMode) return;
+  for (final item in Item.bronze) debugPrint('$item');
+  for (final item in Item.silver) debugPrint('$item');
+  for (final item in Item.gold) debugPrint('$item');
+  for (final item in Item.gem) debugPrint('$item');
 }
 
 // https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSgINV7TiiW1BklV4U0Ie1NngPpjJ0mZLn247UY36OP3gJk5NaezrSlADDLbPy2XIxXJo8c9Nte7tQL/pubhtml?gid=56582984
