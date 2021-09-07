@@ -72,7 +72,13 @@ class QuestWidget extends StatelessWidget {
         Expanded(
             child:
                 Wrap(children: quest.items.map((item) => SizedBox(width: 22, height: 22, child: item.icon)).toList())),
-        if (quest == _selected.value?.quests[0]) Text('单素材最高', style: const TextStyle(color: Colors.deepPurpleAccent)),
+        SizedBox(
+            width: 60,
+            child: Column(children: [
+              Text('${quest.itemAp.toStringAsFixed(2)}'),
+              if (quest == _selected.value?.quests[0])
+                Text('单素材最高', style: const TextStyle(fontSize: 12, color: Colors.deepPurpleAccent))
+            ]))
       ]));
 }
 
