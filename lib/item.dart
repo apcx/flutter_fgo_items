@@ -29,14 +29,11 @@ Future loadQuests() async {
     if (area.isEmpty || area == 'エリア') continue;
     // debugPrint('columns = ${row.length}, $row');
     final quest = Quest(row.sublist(0, 79), j < n ? Quest._NAMES[j++] : null);
-    if (i < 247) {
-      // exclude 平安京
-      quest.bronze.removeRange(bronzes, quest.bronze.length);
-      quest.silver.removeRange(silvers, quest.silver.length);
-      quest.gold.removeRange(golds, quest.gold.length);
-      // debugPrint('$quest');
-      Quest.free.add(quest);
-    }
+    quest.bronze.removeRange(bronzes, quest.bronze.length);
+    quest.silver.removeRange(silvers, quest.silver.length);
+    quest.gold.removeRange(golds, quest.gold.length);
+    // debugPrint('$quest');
+    Quest.free.add(quest);
   }
 
   // init items
@@ -135,7 +132,8 @@ class Quest extends Comparable<Quest> {
     'シン': '秦',
     'ユガ・クシェートラ': '由伽·刹多罗',
     'アトランティス': '亚特兰蒂斯',
-    'オリュンポス': '奥林波斯'
+    'オリュンポス': '奥林波斯',
+    '平安京': '平安京'
   };
   static const _NAMES = [
     '弓之修炼场 超级',
@@ -365,7 +363,20 @@ class Quest extends Comparable<Quest> {
     '空中庭园',
     '机神回廊',
     '大祭坛',
-    '地下机构带·外围'
+    '地下机构带·外围',
+    '七条四坊',
+    '七条二坊',
+    '六条大路',
+    '贵族邸',
+    '朱雀门',
+    '平安宫',
+    '朱雀大路',
+    '稻荷神社',
+    '大宫大路',
+    '赖光的宅邸',
+    '五条桥',
+    '大江山',
+    '三条三坊'
   ];
 
   static final free = <Quest>[];
@@ -388,8 +399,8 @@ class Quest extends Comparable<Quest> {
         ap = row[2],
         samples = row[3] {
     bronze.addAll(row.sublist(4, 13).map(_drops));
-    silver.addAll(row.sublist(15, 35).map(_drops));
-    gold.addAll(row.sublist(37, 55).map(_drops));
+    silver.addAll(row.sublist(15, 36).map(_drops));
+    gold.addAll(row.sublist(37, 56).map(_drops));
     gem.addAll(row.sublist(72, 79).map(_drops));
   }
 
@@ -439,7 +450,8 @@ class Item {
     '闲古铃',
     '祸罪之箭头',
     '光银之冠',
-    '神脉灵子'
+    '神脉灵子',
+    '虹之线球'
   ];
   static const _GOLD_NAMES = [
     '混沌之爪',
@@ -458,7 +470,8 @@ class Item {
     '九十九镜',
     '真理之卵',
     '煌星碎片',
-    '悠久果实'
+    '悠久果实',
+    '鬼炎鬼灯'
   ];
   static const _GEM_NAMES = ['剑之秘石', '弓之秘石', '枪之秘石', '骑之秘石', '术之秘石', '杀之秘石', '狂之秘石'];
 
