@@ -88,6 +88,7 @@ class ItemFilterPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text('素材过滤')),
         body: Column(children: [
+          PropertyFilterButton('牵绊', Item.relationExclude),
           Wrap(children: Item.bronze.map((item) => ItemFilterButton(item)).toList()),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             Text('铜素材'),
@@ -156,5 +157,29 @@ class ItemFilterButton extends StatelessWidget {
                             colorFilter: ColorFilter.mode(Colors.grey[100]!, BlendMode.saturation), child: item.icon)
                         : item.icon),
                 if (item.excluded.value) Center(child: Icon(Icons.clear, color: Colors.redAccent))
+              ]))));
+}
+
+class PropertyFilterButton extends StatelessWidget {
+  final String name;
+  final RxBool property;
+
+  PropertyFilterButton(this.name, this.property);
+
+  @override
+  Widget build(BuildContext context) => Container(
+      margin: const EdgeInsets.all(1),
+      width: 48,
+      height: 48,
+      child: OutlinedButton(
+          style: OutlinedButton.styleFrom(minimumSize: Size.zero, padding: EdgeInsets.zero),
+          onPressed: () => property.toggle(),
+          child: Obx(() => Stack(children: [
+                Center(
+                    child: property.value
+                        ? ColorFiltered(
+                            colorFilter: ColorFilter.mode(Colors.grey[100]!, BlendMode.saturation), child: Text(name))
+                        : Text(name)),
+                if (property.value) Center(child: Icon(Icons.clear, color: Colors.redAccent))
               ]))));
 }

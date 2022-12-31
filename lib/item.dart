@@ -23,12 +23,12 @@ Future loadQuests() async {
   final silvers = Item._SILVER_NAMES.length;
   final golds = Item._GOLD_NAMES.length;
   final gems = Item._GEM_NAMES.length;
-  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 262; ++i) {
+  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 285; ++i) {
     final row = rows[i];
     String area = row[0];
     if (area.isEmpty || area == 'エリア') continue;
     // debugPrint('columns = ${row.length}, $row');
-    final quest = Quest(row.sublist(0, 79), j < n ? Quest._NAMES[j++] : null);
+    final quest = Quest(row.sublist(0, 115), j < n ? Quest._NAMES[j++] : null);
     quest.bronze.removeRange(bronzes, quest.bronze.length);
     quest.silver.removeRange(silvers, quest.silver.length);
     quest.gold.removeRange(golds, quest.gold.length);
@@ -95,6 +95,8 @@ Future loadQuests() async {
   for (final item in Item.silver) item.excluded.value = prefs.getBool(item.name) == true;
   for (final item in Item.gold) item.excluded.value = prefs.getBool(item.name) == true;
   for (final item in Item.gem) item.excluded.value = prefs.getBool(item.name) == true;
+  Item.relationExclude.value = prefs.getBool("relation") == true;
+  Item.relationExclude.listen((v) => (prefs).setBool("relation", v));
 
   if (kReleaseMode) return;
   for (final item in Item.bronze) debugPrint('$item');
@@ -103,9 +105,9 @@ Future loadQuests() async {
   for (final item in Item.gem) debugPrint('$item');
 }
 
-// https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSgINV7TiiW1BklV4U0Ie1NngPpjJ0mZLn247UY36OP3gJk5NaezrSlADDLbPy2XIxXJo8c9Nte7tQL/pubhtml?gid=56582984
-// https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSgINV7TiiW1BklV4U0Ie1NngPpjJ0mZLn247UY36OP3gJk5NaezrSlADDLbPy2XIxXJo8c9Nte7tQL/pub?output=xlsx
-// sheet updated: 2021/7/7
+// https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pubhtml?gid=1838972973#
+// https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pub?output=xlsx
+// sheet updated: 2022/12/30
 class Quest extends Comparable<Quest> {
   static const _AREA_MAP = {
     '修練場（月）': '修炼场（周一）',
@@ -133,33 +135,41 @@ class Quest extends Comparable<Quest> {
     'ユガ・クシェートラ': '由伽·刹多罗',
     'アトランティス': '亚特兰蒂斯',
     'オリュンポス': '奥林波斯',
-    '平安京': '平安京'
+    '平安京': '平安京',
+    'アヴァロン': '阿瓦隆'
   };
   static const _NAMES = [
+    '弓之修炼场 极级',
     '弓之修炼场 超级',
     '弓之修炼场 上级',
     '弓之修炼场 中级',
     '弓之修炼场 初级',
+    '枪之修炼场 极级',
     '枪之修炼场 超级',
     '枪之修炼场 上级',
     '枪之修炼场 中级',
     '枪之修炼场 初级',
+    '狂之修炼场 极级',
     '狂之修炼场 超级',
     '狂之修炼场 上级',
     '狂之修炼场 中级',
     '狂之修炼场 初级',
+    '骑之修炼场 极级',
     '骑之修炼场 超级',
     '骑之修炼场 上级',
     '骑之修炼场 中级',
     '骑之修炼场 初级',
+    '术之修炼场 极级',
     '术之修炼场 超级',
     '术之修炼场 上级',
     '术之修炼场 中级',
     '术之修炼场 初级',
+    '杀之修炼场 极级',
     '杀之修炼场 超级',
     '杀之修炼场 上级',
     '杀之修炼场 中级',
     '杀之修炼场 初级',
+    '剑之修炼场 极级',
     '剑之修炼场 超级',
     '剑之修炼场 上级',
     '剑之修炼场 中级',
@@ -376,7 +386,23 @@ class Quest extends Comparable<Quest> {
     '赖光的宅邸',
     '五条桥',
     '大江山',
-    '三条三坊'
+    '三条三坊',
+    '雾之海岸',
+    '康沃尔之村',
+    '索尔兹伯里',
+    '格洛斯特',
+    '泪之河',
+    '诺里奇',
+    '卡美洛',
+    '伦蒂尼恩',
+    '曼彻斯特',
+    '爱丁堡',
+    '新达灵顿',
+    '湖区',
+    '尽头海岸',
+    '奥克尼',
+    '牛津',
+    '多佛宅邸'
   ];
 
   static final free = <Quest>[];
@@ -390,6 +416,7 @@ class Quest extends Comparable<Quest> {
   final silver = <int>[];
   final gold = <int>[];
   final gem = <int>[];
+  final int relation;
   final items = <Item>[];
   late double itemAp;
 
@@ -397,11 +424,12 @@ class Quest extends Comparable<Quest> {
       : area = _AREA_MAP[row[0]] ?? row[0],
         name = name ?? row[1],
         ap = row[2],
-        samples = row[3] {
-    bronze.addAll(row.sublist(4, 13).map(_drops));
-    silver.addAll(row.sublist(15, 36).map(_drops));
-    gold.addAll(row.sublist(37, 56).map(_drops));
-    gem.addAll(row.sublist(72, 79).map(_drops));
+        samples = row[3],
+        relation = row[114] {
+    bronze.addAll(row.sublist(4, 14).map(_drops));
+    silver.addAll(row.sublist(17, 39).map(_drops));
+    gold.addAll(row.sublist(39, 58).map(_drops));
+    gem.addAll(row.sublist(74, 81).map(_drops));
   }
 
   int _drops(rate) {
@@ -430,7 +458,7 @@ class Quest extends Comparable<Quest> {
 
 class Item {
   static const _TYPES = ['bronze', 'silver', 'gold', '', '', 'gem'];
-  static const _BRONZE_NAMES = ['英雄之证', '凶骨', '龙之牙', '虚影之尘', '愚者之锁', '万死的毒针', '魔术髓液', '宵泣之铁桩', '振荡火药'];
+  static const _BRONZE_NAMES = ['英雄之证', '凶骨', '龙之牙', '虚影之尘', '愚者之锁', '万死的毒针', '魔术髓液', '宵泣之铁桩', '振荡火药', '赦免的小钟'];
   static const _SILVER_NAMES = [
     '世界树之种',
     '鬼魂提灯',
@@ -451,7 +479,8 @@ class Item {
     '祸罪之箭头',
     '光银之冠',
     '神脉灵子',
-    '虹之线球'
+    '虹之线球',
+    '梦幻的鳞粉'
   ];
   static const _GOLD_NAMES = [
     '混沌之爪',
@@ -479,6 +508,7 @@ class Item {
   static final silver = <Item>[];
   static final gold = <Item>[];
   static final gem = <Item>[];
+  static final relationExclude = false.obs;
 
   final int type;
   final int index;
@@ -518,8 +548,9 @@ class Item {
         if ((type == 5 && index == i) || !item.excluded.value) aps += quest.gem[i] * item.ap;
         if (quest.gem[i] > 0) quest.items.add(item);
       }
-      quest.itemAp =
-          aps / quest.samples / (quest.area.startsWith('修炼场') && Quest.classHalfAp.value ? quest.ap ~/ 2 : quest.ap);
+      var ap = aps / quest.samples;
+      if (!relationExclude.value) ap += 21 / 1191 * ((quest.relation * 1.35).toInt() + 50);
+      quest.itemAp = ap / (quest.area.startsWith('修炼场') && Quest.classHalfAp.value ? quest.ap ~/ 2 : quest.ap);
     }
     List<Quest> bests = List.from(quests)..sort();
     if (bests.length > 10) bests.removeRange(10, bests.length);
