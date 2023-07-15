@@ -23,12 +23,12 @@ Future loadQuests() async {
   final silvers = Item._SILVER_NAMES.length;
   final golds = Item._GOLD_NAMES.length;
   final gems = Item._GEM_NAMES.length;
-  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 285; ++i) {
+  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 283; ++i) {
     final row = rows[i];
     String area = row[0];
     if (area.isEmpty || area == 'エリア') continue;
     // debugPrint('columns = ${row.length}, $row');
-    final quest = Quest(row.sublist(0, 115), j < n ? Quest._NAMES[j++] : null);
+    final quest = Quest(row.sublist(0, 107), j < n ? Quest._NAMES[j++] : null);
     quest.bronze.removeRange(bronzes, quest.bronze.length);
     quest.silver.removeRange(silvers, quest.silver.length);
     quest.gold.removeRange(golds, quest.gold.length);
@@ -58,6 +58,35 @@ Future loadQuests() async {
     });
     final quest = item.quests[0];
     item.ap = quest.ap / (quest.bronze[i] / quest.samples);
+    switch (item.name) {
+      case '英雄之证':
+        item.ap /= 1.1;
+        break;
+      case '凶骨':
+        item.ap /= 1.1;
+        break;
+      case '龙之牙':
+        item.ap /= 1.1;
+        break;
+      case '虚影之尘':
+        item.ap /= 1.1;
+        break;
+      case '八连双晶':
+        item.ap /= 1.1;
+        break;
+      case '凤凰羽毛':
+        item.ap /= 1.05;
+        break;
+      case '无间齿轮':
+        item.ap /= 1.05;
+        break;
+      case '禁断书页':
+        item.ap /= 1.05;
+        break;
+      case '追忆的贝壳':
+        item.ap /= 1.05;
+        break;
+    }
   }
   for (int i = 0; i < silvers; ++i) {
     final item = Item.silver[i];
@@ -107,7 +136,7 @@ Future loadQuests() async {
 
 // https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pubhtml?gid=1838972973#
 // https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pub?output=xlsx
-// sheet updated: 2022/12/30
+// sheet updated: 2023/5/28
 class Quest extends Comparable<Quest> {
   static const _AREA_MAP = {
     '修練場（月）': '修炼场（周一）',
@@ -136,7 +165,8 @@ class Quest extends Comparable<Quest> {
     'アトランティス': '亚特兰蒂斯',
     'オリュンポス': '奥林波斯',
     '平安京': '平安京',
-    'アヴァロン': '阿瓦隆'
+    'アヴァロン': '阿瓦隆',
+    'トラオム': 'Traum'
   };
   static const _NAMES = [
     '弓之修炼场 极级',
@@ -425,11 +455,11 @@ class Quest extends Comparable<Quest> {
         name = name ?? row[1],
         ap = row[2],
         samples = row[3],
-        relation = row[114] {
-    bronze.addAll(row.sublist(4, 14).map(_drops));
-    silver.addAll(row.sublist(17, 39).map(_drops));
+        relation = row[106] {
+    bronze.addAll(row.sublist(4, 16).map(_drops));
+    silver.addAll(row.sublist(17, 38).map(_drops));
     gold.addAll(row.sublist(39, 58).map(_drops));
-    gem.addAll(row.sublist(74, 81).map(_drops));
+    gem.addAll(row.sublist(72, 79).map(_drops));
   }
 
   int _drops(rate) {
@@ -458,7 +488,20 @@ class Quest extends Comparable<Quest> {
 
 class Item {
   static const _TYPES = ['bronze', 'silver', 'gold', '', '', 'gem'];
-  static const _BRONZE_NAMES = ['英雄之证', '凶骨', '龙之牙', '虚影之尘', '愚者之锁', '万死的毒针', '魔术髓液', '宵泣之铁桩', '振荡火药', '赦免的小钟'];
+  static const _BRONZE_NAMES = [
+    '英雄之证',
+    '凶骨',
+    '龙之牙',
+    '虚影之尘',
+    '愚者之锁',
+    '万死的毒针',
+    '魔术髓液',
+    '宵泣之铁桩',
+    '振荡火药',
+    '赦免的小钟',
+    '黄昏的仪式剑',
+    '不忘之灰'
+  ];
   static const _SILVER_NAMES = [
     '世界树之种',
     '鬼魂提灯',
@@ -524,6 +567,7 @@ class Item {
   Widget get icon => Image.asset('assets/${_TYPES[type]}_$index.png');
 
   List<Quest> get bestQuests {
+    final apPerRelation = 0.0137182052014861;
     for (final quest in quests) {
       quest.itemAp = 0;
       quest.items.clear();
@@ -549,7 +593,14 @@ class Item {
         if (quest.gem[i] > 0) quest.items.add(item);
       }
       var ap = aps / quest.samples;
-      if (!relationExclude.value) ap += 21 / 1191 * ((quest.relation * 1.35).toInt() + 50);
+      var fp = 125;
+      if (quest.relation > 1000) {
+        if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.35).toInt() + 50);
+      } else {
+        if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.325).toInt() + 50);
+        fp += 25;
+      }
+      ap += fp / 75;
       quest.itemAp = ap / (quest.area.startsWith('修炼场') && Quest.classHalfAp.value ? quest.ap ~/ 2 : quest.ap);
     }
     List<Quest> bests = List.from(quests)..sort();
