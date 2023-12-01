@@ -34,7 +34,8 @@ android {
 
     defaultConfig {
         applicationId 'apc.fgo.items'
-        minSdkVersion 16
+        compileSdkVersion 33
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

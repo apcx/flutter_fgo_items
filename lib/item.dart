@@ -23,12 +23,12 @@ Future loadQuests() async {
   final silvers = Item._SILVER_NAMES.length;
   final golds = Item._GOLD_NAMES.length;
   final gems = Item._GEM_NAMES.length;
-  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 283; ++i) {
+  for (int i = 3, j = 0, n = Quest._NAMES.length; i < 299; ++i) {
     final row = rows[i];
     String area = row[0];
     if (area.isEmpty || area == 'エリア') continue;
     // debugPrint('columns = ${row.length}, $row');
-    final quest = Quest(row.sublist(0, 107), j < n ? Quest._NAMES[j++] : null);
+    final quest = Quest(row.sublist(0, 109), j < n ? Quest._NAMES[j++] : null);
     quest.bronze.removeRange(bronzes, quest.bronze.length);
     quest.silver.removeRange(silvers, quest.silver.length);
     quest.gold.removeRange(golds, quest.gold.length);
@@ -60,30 +60,30 @@ Future loadQuests() async {
     item.ap = quest.ap / (quest.bronze[i] / quest.samples);
     switch (item.name) {
       case '英雄之证':
-        item.ap /= 1.1;
+        item.ap /= 1.15;
         break;
       case '凶骨':
-        item.ap /= 1.1;
+        item.ap /= 1.2;
         break;
       case '龙之牙':
-        item.ap /= 1.1;
+        item.ap /= 1.15;
         break;
       case '虚影之尘':
-        item.ap /= 1.1;
+        item.ap /= 1.25;
         break;
-      case '八连双晶':
-        item.ap /= 1.1;
-        break;
-      case '凤凰羽毛':
+      case '愚者之锁':
         item.ap /= 1.05;
         break;
-      case '无间齿轮':
+      case '万死的毒针':
         item.ap /= 1.05;
         break;
-      case '禁断书页':
+      case '魔术髓液':
         item.ap /= 1.05;
         break;
-      case '追忆的贝壳':
+      case '宵泣之铁桩':
+        item.ap /= 1.05;
+        break;
+      case '振荡火药':
         item.ap /= 1.05;
         break;
     }
@@ -97,6 +97,41 @@ Future loadQuests() async {
     });
     final quest = item.quests[0];
     item.ap = quest.ap / (quest.silver[i] / quest.samples);
+    switch (item.name) {
+      case '世界树之种':
+        item.ap /= 1.05;
+        break;
+      case '鬼魂提灯':
+        item.ap /= 1.05;
+        break;
+      case '八连双晶':
+        item.ap /= 1.15;
+        break;
+      case '蛇之宝玉':
+        item.ap /= 1.05;
+        break;
+      case '凤凰羽毛':
+        item.ap /= 1.15;
+        break;
+      case '无间齿轮':
+        item.ap /= 1.1;
+        break;
+      case '禁断书页':
+        item.ap /= 1.1;
+        break;
+      case '人工生命体幼体':
+        item.ap /= 1.05;
+        break;
+      case '陨蹄铁':
+        item.ap /= 1.05;
+        break;
+      case '大骑士勋章':
+        item.ap /= 1.05;
+        break;
+      case '追忆的贝壳':
+        item.ap /= 1.15;
+        break;
+    }
   }
   for (int i = 0; i < golds; ++i) {
     final item = Item.gold[i];
@@ -107,6 +142,17 @@ Future loadQuests() async {
     });
     final quest = item.quests[0];
     item.ap = quest.ap / (quest.gold[i] / quest.samples);
+    switch (item.name) {
+      case '蛮神心脏':
+        item.ap /= 1.05;
+        break;
+      case '龙之逆鳞':
+        item.ap /= 1.05;
+        break;
+      case '血之泪石':
+        item.ap /= 1.05;
+        break;
+    }
   }
   for (int i = 0; i < gems; ++i) {
     final item = Item.gem[i];
@@ -136,7 +182,7 @@ Future loadQuests() async {
 
 // https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pubhtml?gid=1838972973#
 // https://docs.google.com/spreadsheets/d/e/2PACX-1vQerC77YrlI1wQaJHUlDl3VBNh3zx6YDWbF8syDM3DsoG3npubnlG68VY9GlYwRAiP5RCOqQEHZoF4c/pub?output=xlsx
-// sheet updated: 2023/5/28
+// sheet updated: 2024/1/28
 class Quest extends Comparable<Quest> {
   static const _AREA_MAP = {
     '修練場（月）': '修炼场（周一）',
@@ -166,7 +212,8 @@ class Quest extends Comparable<Quest> {
     'オリュンポス': '奥林波斯',
     '平安京': '平安京',
     'アヴァロン': '阿瓦隆',
-    'トラオム': 'Traum'
+    'トラオム': 'Traum',
+    'ミクトラン': '米克特兰'
   };
   static const _NAMES = [
     '弓之修炼场 极级',
@@ -432,7 +479,39 @@ class Quest extends Comparable<Quest> {
     '尽头海岸',
     '奥克尼',
     '牛津',
-    '多佛宅邸'
+    '多佛宅邸',
+    '边界城镇',
+    '破晓平原',
+    '中部森林',
+    '黄昏之森',
+    '天崄山脉',
+    '王道界域据点',
+    '克桑滕之塔',
+    '阿查果克堡垒',
+    '湖畔平原',
+    '锡尔米乌姆',
+    '复权界域据点',
+    '门前平原',
+    '复仇界域据点',
+    '莱辛巴赫',
+    '止境荒野',
+    '约维努斯堡垒',
+    '奇科莫斯托克',
+    '贤者的隐居之所',
+    '玉米地',
+    '特拉特拉乌基',
+    '大平原',
+    '奇琴伊察',
+    '坠机点',
+    '伊斯塔乌基',
+    '墨西哥城',
+    '亚亚乌基',
+    '卡拉克穆尔',
+    '卡恩的废墟',
+    '索索亚乌基',
+    '梅兹蒂特兰',
+    '烤玉米地',
+    '蒂卡尔遗迹'
   ];
 
   static final free = <Quest>[];
@@ -455,11 +534,11 @@ class Quest extends Comparable<Quest> {
         name = name ?? row[1],
         ap = row[2],
         samples = row[3],
-        relation = row[106] {
-    bronze.addAll(row.sublist(4, 16).map(_drops));
-    silver.addAll(row.sublist(17, 38).map(_drops));
-    gold.addAll(row.sublist(39, 58).map(_drops));
-    gem.addAll(row.sublist(72, 79).map(_drops));
+        relation = row[108] {
+    bronze.addAll(row.sublist(4, 17).map(_drops));
+    silver.addAll(row.sublist(18, 40).map(_drops));
+    gold.addAll(row.sublist(41, 60).map(_drops));
+    gem.addAll(row.sublist(74, 81).map(_drops));
   }
 
   int _drops(rate) {
@@ -500,7 +579,8 @@ class Item {
     '振荡火药',
     '赦免的小钟',
     '黄昏的仪式剑',
-    '不忘之灰'
+    '不忘之灰',
+    '黑曜锐刃'
   ];
   static const _SILVER_NAMES = [
     '世界树之种',
@@ -523,7 +603,8 @@ class Item {
     '光银之冠',
     '神脉灵子',
     '虹之线球',
-    '梦幻的鳞粉'
+    '梦幻的鳞粉',
+    '太阳皮'
   ];
   static const _GOLD_NAMES = [
     '混沌之爪',
@@ -567,6 +648,7 @@ class Item {
   Widget get icon => Image.asset('assets/${_TYPES[type]}_$index.png');
 
   List<Quest> get bestQuests {
+    final fpTimes = 1;
     final apPerRelation = 0.0137182052014861;
     for (final quest in quests) {
       quest.itemAp = 0;
@@ -593,14 +675,20 @@ class Item {
         if (quest.gem[i] > 0) quest.items.add(item);
       }
       var ap = aps / quest.samples;
-      var fp = 125;
-      if (quest.relation > 1000) {
-        if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.35).toInt() + 50);
+      var fp = 0;
+      if (fpTimes <= 1) {
+        if (quest.relation < 790) {
+          if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.30).toInt() + 50);
+          fp = 175;
+        } else {
+          if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.35).toInt() + 50);
+          fp = 125;
+        }
       } else {
-        if (!relationExclude.value) ap += apPerRelation * ((quest.relation * 1.325).toInt() + 50);
-        fp += 25;
+        if (!relationExclude.value) ap += apPerRelation * (quest.relation * 1.325).toInt();
+        fp = 200;
       }
-      ap += fp / 75;
+      ap += fp * fpTimes * 0.010792291220557;
       quest.itemAp = ap / (quest.area.startsWith('修炼场') && Quest.classHalfAp.value ? quest.ap ~/ 2 : quest.ap);
     }
     List<Quest> bests = List.from(quests)..sort();
@@ -613,5 +701,5 @@ class Item {
   }
 
   @override
-  String toString() => '$name: AP ${ap.toStringAsFixed(1)} ${quests.map((quest) => quest.name)}';
+  String toString() => '$name: AP ${ap.toStringAsFixed(2)} ${quests.map((quest) => quest.name)}';
 }
