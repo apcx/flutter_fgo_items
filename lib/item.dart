@@ -63,7 +63,7 @@ Future loadQuests() async {
         item.ap /= 1.15;
         break;
       case '凶骨':
-        item.ap /= 1.2;
+        item.ap /= 1.25;
         break;
       case '龙之牙':
         item.ap /= 1.15;
@@ -117,7 +117,7 @@ Future loadQuests() async {
         item.ap /= 1.1;
         break;
       case '禁断书页':
-        item.ap /= 1.1;
+        item.ap /= 1.15;
         break;
       case '人工生命体幼体':
         item.ap /= 1.05;
@@ -143,6 +143,9 @@ Future loadQuests() async {
     final quest = item.quests[0];
     item.ap = quest.ap / (quest.gold[i] / quest.samples);
     switch (item.name) {
+      case '混沌之爪':
+        item.ap /= 1.05;
+        break;
       case '蛮神心脏':
         item.ap /= 1.05;
         break;
