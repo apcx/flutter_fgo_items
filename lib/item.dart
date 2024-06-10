@@ -60,13 +60,13 @@ Future loadQuests() async {
     item.ap = quest.ap / (quest.bronze[i] / quest.samples);
     switch (item.name) {
       case '英雄之证':
-        item.ap /= 1.15;
+        item.ap /= 1.2;
         break;
       case '凶骨':
         item.ap /= 1.25;
         break;
       case '龙之牙':
-        item.ap /= 1.15;
+        item.ap /= 1.25;
         break;
       case '虚影之尘':
         item.ap /= 1.25;
@@ -114,7 +114,7 @@ Future loadQuests() async {
         item.ap /= 1.15;
         break;
       case '无间齿轮':
-        item.ap /= 1.1;
+        item.ap /= 1.15;
         break;
       case '禁断书页':
         item.ap /= 1.15;
@@ -129,7 +129,10 @@ Future loadQuests() async {
         item.ap /= 1.05;
         break;
       case '追忆的贝壳':
-        item.ap /= 1.15;
+        item.ap = 35.4846684814314; // 1.15
+        break;
+      case '永远结冰':
+        item.ap = 36.3528330847662;
         break;
     }
   }
@@ -152,7 +155,13 @@ Future loadQuests() async {
       case '龙之逆鳞':
         item.ap /= 1.05;
         break;
+      case '精灵根':
+        item.ap /= 1.05;
+        break;
       case '血之泪石':
+        item.ap /= 1.05;
+        break;
+      case '起源的胎毛':
         item.ap /= 1.05;
         break;
     }
